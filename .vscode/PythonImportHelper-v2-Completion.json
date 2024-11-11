@@ -116,6 +116,23 @@
         "documentation": {}
     },
     {
+        "label": "paho.mqtt.client",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "paho.mqtt.client",
+        "description": "paho.mqtt.client",
+        "detail": "paho.mqtt.client",
+        "documentation": {}
+    },
+    {
+        "label": "ReasonCodes",
+        "importPath": "paho.mqtt.client",
+        "description": "paho.mqtt.client",
+        "isExtraImport": true,
+        "detail": "paho.mqtt.client",
+        "documentation": {}
+    },
+    {
         "label": "ABC",
         "importPath": "abc",
         "description": "abc",
@@ -172,12 +189,11 @@
         "documentation": {}
     },
     {
-        "label": "paho.mqtt.client",
-        "kind": 6,
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
         "isExtraImport": true,
-        "importPath": "paho.mqtt.client",
-        "description": "paho.mqtt.client",
-        "detail": "paho.mqtt.client",
+        "detail": "datetime",
         "documentation": {}
     },
     {
@@ -222,6 +238,14 @@
         "documentation": {}
     },
     {
+        "label": "HiveMQSSLContextFactory",
+        "importPath": "mqtt_client.ssl_context",
+        "description": "mqtt_client.ssl_context",
+        "isExtraImport": true,
+        "detail": "mqtt_client.ssl_context",
+        "documentation": {}
+    },
+    {
         "label": "MessageHandler",
         "importPath": "mqtt_client.message_handler",
         "description": "mqtt_client.message_handler",
@@ -246,7 +270,31 @@
         "documentation": {}
     },
     {
+        "label": "Message",
+        "importPath": "mqtt_client.message_handler",
+        "description": "mqtt_client.message_handler",
+        "isExtraImport": true,
+        "detail": "mqtt_client.message_handler",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultMessageHandler",
+        "importPath": "mqtt_client.message_handler",
+        "description": "mqtt_client.message_handler",
+        "isExtraImport": true,
+        "detail": "mqtt_client.message_handler",
+        "documentation": {}
+    },
+    {
         "label": "ConnectionHandler",
+        "importPath": "mqtt_client.connection_handler",
+        "description": "mqtt_client.connection_handler",
+        "isExtraImport": true,
+        "detail": "mqtt_client.connection_handler",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultConnectionHandler",
         "importPath": "mqtt_client.connection_handler",
         "description": "mqtt_client.connection_handler",
         "isExtraImport": true,
@@ -288,11 +336,35 @@
         "documentation": {}
     },
     {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
         "label": "ConfigurationManager",
         "importPath": "mqtt_client.config",
         "description": "mqtt_client.config",
         "isExtraImport": true,
         "detail": "mqtt_client.config",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigurationManager",
+        "importPath": "mqtt_client.config",
+        "description": "mqtt_client.config",
+        "isExtraImport": true,
+        "detail": "mqtt_client.config",
+        "documentation": {}
+    },
+    {
+        "label": "MQTTClientWrapper",
+        "importPath": "mqtt_client.mqtt_client",
+        "description": "mqtt_client.mqtt_client",
+        "isExtraImport": true,
+        "detail": "mqtt_client.mqtt_client",
         "documentation": {}
     },
     {
@@ -317,6 +389,15 @@
         "kind": 6,
         "importPath": "mqtt_client.connection_handler",
         "description": "mqtt_client.connection_handler",
+        "peekOfCode": "class ConnectionHandler(ABC):\n    \"\"\"Abstract base class for connection handling\"\"\"\n    @abstractmethod\n    def on_connect(self, client: Any, userdata: Any, flags: Dict, rc: int, properties: Optional[Dict] = None) -> None:\n        pass\n    @abstractmethod\n    def on_disconnect(self, client: Any, userdata: Any, rc: int, properties: Optional[Dict] = None) -> None:\n        pass\n# connection_handler.py\nclass ConnectionHandler(ABC):",
+        "detail": "mqtt_client.connection_handler",
+        "documentation": {}
+    },
+    {
+        "label": "ConnectionHandler",
+        "kind": 6,
+        "importPath": "mqtt_client.connection_handler",
+        "description": "mqtt_client.connection_handler",
         "peekOfCode": "class ConnectionHandler(ABC):\n    \"\"\"Abstract base class for connection handling\"\"\"\n    @abstractmethod\n    def on_connect(self, client: Any, userdata: Any, flags: Dict, rc: int, properties: Optional[Dict] = None) -> None:\n        pass\n    @abstractmethod\n    def on_disconnect(self, client: Any, userdata: Any, rc: int, properties: Optional[Dict] = None) -> None:\n        pass\nclass DefaultConnectionHandler(ConnectionHandler):\n    \"\"\"Default implementation of connection handling\"\"\"",
         "detail": "mqtt_client.connection_handler",
         "documentation": {}
@@ -326,7 +407,7 @@
         "kind": 6,
         "importPath": "mqtt_client.connection_handler",
         "description": "mqtt_client.connection_handler",
-        "peekOfCode": "class DefaultConnectionHandler(ConnectionHandler):\n    \"\"\"Default implementation of connection handling\"\"\"\n    def __init__(self):\n        self.connected = False\n        self.subscribed_topics = set()\n    def on_connect(self, client: Any, userdata: Any, flags: Dict, rc: int, properties: Optional[Dict] = None) -> None:\n        connection_codes = {\n            0: \"Connection successful\",\n            1: \"Connection refused - incorrect protocol version\",\n            2: \"Connection refused - invalid client identifier\",",
+        "peekOfCode": "class DefaultConnectionHandler(ConnectionHandler):\n    \"\"\"Default implementation of connection handling\"\"\"\n    def __init__(self):\n        self.connected = False\n        self.subscribed_topics = set()\n    def on_connect(self, client: Any, userdata: Any, flags: Dict, rc: Any, properties: Optional[Dict] = None) -> None:\n        # For MQTT v5, rc is a ReasonCode object\n        rc_value = rc.value if hasattr(rc, 'value') else rc\n        connection_codes = {\n            0: \"Connection successful\",",
         "detail": "mqtt_client.connection_handler",
         "documentation": {}
     },
@@ -382,6 +463,24 @@
         "description": "mqtt_client.ssl_context",
         "peekOfCode": "class HiveMQSSLContextFactory(SSLContextFactory):\n    \"\"\"Concrete factory for HiveMQ SSL context\"\"\"\n    def __init__(self, ca_cert: str):\n        if not ca_cert:\n            raise ValueError(\"CA certificate is empty\")\n        # Clean the certificate string\n        cert = ca_cert.strip().strip('\"').strip(\"'\")\n        # Split into lines and clean each line\n        cert_parts = cert.split()\n        # Reconstruct certificate with proper line breaks",
         "detail": "mqtt_client.ssl_context",
+        "documentation": {}
+    },
+    {
+        "label": "EchoMessageHandler",
+        "kind": 6,
+        "importPath": "echo",
+        "description": "echo",
+        "peekOfCode": "class EchoMessageHandler(DefaultMessageHandler):\n    \"\"\"Message handler that echoes messages to console\"\"\"\n    def handle_message(self, message: Message) -> None:\n        # Call parent method to maintain message history\n        super().handle_message(message)\n        # Pretty print the message\n        try:\n            # Try to parse as JSON for prettier output\n            payload = json.loads(message.payload)\n            payload_str = json.dumps(payload, indent=2)",
+        "detail": "echo",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "echo",
+        "description": "echo",
+        "peekOfCode": "def main():\n    try:\n        # Load environment variables\n        load_dotenv()\n        # Initialize configuration\n        config_manager = ConfigurationManager()\n        mqtt_config = config_manager.get_mqtt_config()\n        # Create components\n        ssl_factory = HiveMQSSLContextFactory(mqtt_config['cert'])\n        message_handler = EchoMessageHandler()",
+        "detail": "echo",
         "documentation": {}
     }
 ]
