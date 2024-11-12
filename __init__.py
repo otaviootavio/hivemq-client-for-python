@@ -3,6 +3,8 @@ from mqtt_client.ssl_context import SSLContextFactory, HiveMQSSLContextFactory
 from mqtt_client.message_handler import Message, MessageHandler, DefaultMessageHandler
 from mqtt_client.connection_handler import ConnectionHandler, DefaultConnectionHandler
 from mqtt_client.mqtt_client import MQTTClientWrapper
+from mqtt_client.config_2 import ConfigurationManager2
+from database import PostgresMQTTClient
 
 __all__ = [
     'ConfigurationManager',
@@ -14,4 +16,6 @@ __all__ = [
     'ConnectionHandler',
     'DefaultConnectionHandler',
     'MQTTClientWrapper'
+    'PostgresMQTTClient',
+    'ConfigurationManager2'
 ]
