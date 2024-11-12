@@ -78,6 +78,7 @@ def main():
         # Initialize MQTT configuration
         config_manager = ConfigurationManager(
             mqtt_broker=os.getenv('MQTT_BROKER'),
+            mqtt_client_id=os.getenv('MQTT_CLIENT_ID'),
             mqtt_username=os.getenv('MQTT_USERNAME'),
             mqtt_password=os.getenv('MQTT_PASSWORD'),
             hivemq_cloud_cert=cert_content,
@@ -89,6 +90,11 @@ def main():
         ssl_factory = HiveMQSSLContextFactory(mqtt_config['cert'])
         message_handler = DatabaseMessageHandler(db_client)
         connection_handler = DefaultConnectionHandler()
+
+        # Add before creating MQTTClientWrapper
+        logging.debug(f"MQTT Broker: {os.getenv('MQTT_BROKER')}")
+        logging.debug(f"MQTT Port: {os.getenv('MQTT_PORT')}")
+        logging.debug(f"Certificate length: {len(cert_content)}")
 
         # Create and connect MQTT client
         mqtt_client = MQTTClientWrapper(
@@ -129,7 +135,7 @@ def main():
 if __name__ == "__main__":
     # Set up logging
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
     main()

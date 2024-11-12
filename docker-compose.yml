@@ -1,0 +1,11 @@
+services:
+  mqtt-bridge:
+    build: .
+    environment:
+      - DB_URL=${DB_URL}
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MQTT_PORT=8883
+    volumes:
+      - ./cert.pem:/app/cert.pem:ro

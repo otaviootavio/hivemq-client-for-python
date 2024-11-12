@@ -5,12 +5,6 @@ from typing import Dict, Optional
 
 class ConfigurationManager:
     """Responsible for managing configuration and environment variables"""
-    REQUIRED_ENV_VARS = {
-        'MQTT_BROKER': 'HiveMQ Cloud broker URL',
-        'MQTT_USERNAME': 'HiveMQ Cloud username',
-        'MQTT_PASSWORD': 'HiveMQ Cloud password',
-        'HIVEMQ_CLOUD_CERT': 'HiveMQ Cloud CA certificate'
-    }
 
     def __init__(
         self,
@@ -22,35 +16,52 @@ class ConfigurationManager:
         mqtt_client_id: Optional[str] = None,
         logging_level: int = logging.DEBUG
     ):
-        self.mqtt_broker = mqtt_broker
-        self.mqtt_username = mqtt_username
-        self.mqtt_password = mqtt_password
+        # Strip any whitespace from credentials
+        self.mqtt_broker = mqtt_broker.strip() if mqtt_broker else None
+        self.mqtt_username = mqtt_username.strip() if mqtt_username else None
+        self.mqtt_password = mqtt_password.strip() if mqtt_password else None
         self.hivemq_cloud_cert = hivemq_cloud_cert
         self.mqtt_port = mqtt_port
         self.mqtt_client_id = mqtt_client_id
         self.logging_level = logging_level
 
-        self._validate_required_vars()
+        self._validate_configuration()
         self.setup_logging()
 
-    def _validate_required_vars(self) -> None:
-        missing_vars = []
-        required_vars = {
-            'MQTT_BROKER': self.mqtt_broker,
-            'MQTT_USERNAME': self.mqtt_username,
-            'MQTT_PASSWORD': self.mqtt_password,
-            'HIVEMQ_CLOUD_CERT': self.hivemq_cloud_cert
-        }
+    def _validate_configuration(self) -> None:
+        errors = []
 
-        for var, value in required_vars.items():
-            if not value:
-                missing_vars.append(f"{var} ({self.REQUIRED_ENV_VARS[var]})")
+        if not self.mqtt_broker:
+            errors.append("MQTT_BROKER is empty or not set")
+        if not self.mqtt_username:
+            errors.append("MQTT_USERNAME is empty or not set")
+        if not self.mqtt_password:
+            errors.append("MQTT_PASSWORD is empty or not set")
+        if not self.hivemq_cloud_cert:
+            errors.append("HIVEMQ_CLOUD_CERT is empty or not set")
 
-        if missing_vars:
-            for var in missing_vars:
-                logging.error(f"Missing required variable: {var}")
-            logging.error("Please check your configuration")
-            sys.exit(1)
+        # Validate broker URL format
+        if self.mqtt_broker and not self.mqtt_broker.endswith('.hivemq.cloud'):
+            errors.append(f"Invalid HiveMQ broker URL format: {
+                          self.mqtt_broker}")
+
+        # Validate port
+        if not isinstance(self.mqtt_port, int) or self.mqtt_port <= 0:
+            errors.append(f"Invalid MQTT port: {self.mqtt_port}")
+
+        if errors:
+            for error in errors:
+                logging.error(f"Configuration error: {error}")
+            raise ValueError("Invalid configuration. Check logs for details.")
+
+        # Log successful validation
+        logging.info("Configuration validation successful")
+        logging.debug(f"Using broker: {self.mqtt_broker}")
+        logging.debug(f"Using port: {self.mqtt_port}")
+        logging.debug(f"Username length: {
+                      len(self.mqtt_username) if self.mqtt_username else 0}")
+        logging.debug(f"Password length: {
+                      len(self.mqtt_password) if self.mqtt_password else 0}")
 
     def setup_logging(self) -> None:
         logging.basicConfig(
