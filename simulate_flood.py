@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import math
 import random
@@ -10,7 +11,7 @@ import sys
 from mqtt_client.ssl_context import HiveMQSSLContextFactory
 from mqtt_client.connection_handler import DefaultConnectionHandler
 from mqtt_client.mqtt_client import MQTTClientWrapper
-from mqtt_client.config_2 import ConfigurationManager2
+from mqtt_client.config import ConfigurationManager
 
 
 class FloodLevelSimulator:
@@ -85,7 +86,17 @@ def main():
         load_dotenv()
 
         # Initialize MQTT configuration
-        config_manager = ConfigurationManager2()
+        with open('cert.pem', 'r') as cert_file:
+            cert_content = cert_file.read()
+
+        # Initialize MQTT configuration
+        config_manager = ConfigurationManager(
+            mqtt_broker=os.getenv('MQTT_BROKER'),
+            mqtt_username=os.getenv('MQTT_USERNAME_2'),
+            mqtt_password=os.getenv('MQTT_PASSWORD_2'),
+            hivemq_cloud_cert=cert_content,
+            mqtt_port=int(os.getenv('MQTT_PORT', '8883'))
+        )
         mqtt_config = config_manager.get_mqtt_config()
 
         # Create MQTT components
