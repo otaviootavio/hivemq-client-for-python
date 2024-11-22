@@ -74,9 +74,6 @@ class FloodLevelSimulator:
             },
             "timestamp": timestamp,
             "water_level_cm": level,
-            "alert_level": alert_level,
-            "battery_level": random.uniform(90, 100),  # Random battery level
-            "status": "operational"
         }
 
 
@@ -137,8 +134,7 @@ def main():
 
                 # Print status
                 print(f"\r[{message['timestamp']}] "
-                      f"Water Level: {message['water_level_cm']}cm "
-                      f"({message['alert_level'].upper()})", end='')
+                      f"Water Level: {message['water_level_cm']}cm ", end='')
 
                 # Wait before next reading
                 time.sleep(1)  # Update every second
