@@ -1,6 +1,7 @@
 import json
 import logging
 from dotenv import load_dotenv
+import os
 import sys
 from datetime import datetime
 
@@ -41,8 +42,17 @@ def main():
         # Load environment variables
         load_dotenv()
 
+        with open('cert.pem', 'r') as cert_file:
+            cert_content = cert_file.read()
+
         # Initialize configuration
-        config_manager = ConfigurationManager()
+        config_manager = config_manager = ConfigurationManager(
+            mqtt_broker=os.getenv('MQTT_BROKER'),
+            mqtt_username=os.getenv('MQTT_USERNAME_2'),
+            mqtt_password=os.getenv('MQTT_PASSWORD_2'),
+            hivemq_cloud_cert=cert_content,
+            mqtt_port=int(os.getenv('MQTT_PORT', '8883'))
+        )
         mqtt_config = config_manager.get_mqtt_config()
 
         # Create components
