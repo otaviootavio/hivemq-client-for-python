@@ -48,7 +48,7 @@ class FloodLevelSimulator:
 
         return round(level, 2)
 
-    def get_message(self) -> dict:
+    def get_message(self) -> int:
         """Generate a message with current flood level and metadata."""
         level = self.get_current_level()
         timestamp = datetime.now().isoformat()
@@ -62,19 +62,7 @@ class FloodLevelSimulator:
         elif level > 60:
             alert_level = "caution"
 
-        return {
-            "sensor_id": "FLOOD_001",
-            "location": {
-                "street": "Main Street",
-                "city": "Riverside",
-                "coordinates": {
-                    "lat": 34.9530,
-                    "lon": -120.4357
-                }
-            },
-            "timestamp": timestamp,
-            "water_level_cm": level,
-        }
+        return level
 
 
 def main():
@@ -125,17 +113,11 @@ def main():
                 message = simulator.get_message()
 
                 # Convert to JSON and publish
-                message_str = json.dumps(message)
                 mqtt_client.publish(
                     topic="sensors/flood/main_street",
-                    message=message_str,  # Changed 'payload' to 'message'
+                    message=message,  # Changed 'payload' to 'message'
                     qos=1
                 )
-
-                # Print status
-                print(f"\r[{message['timestamp']}] "
-                      f"Water Level: {message['water_level_cm']}cm ", end='')
-
                 # Wait before next reading
                 time.sleep(1)  # Update every second
 
