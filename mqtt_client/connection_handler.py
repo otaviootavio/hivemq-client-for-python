@@ -52,8 +52,7 @@ class DefaultConnectionHandler(ConnectionHandler):
 
         if rc_value == 0:
             self.connected = True
-            logging.info(f"Connected to HiveMQ Cloud: {
-                         connection_codes.get(rc_value, 'Unknown status')}")
+            logging.info(f"Connected to HiveMQ Cloud: {connection_codes.get(rc_value, 'Unknown status')}")
             for topic in self.subscribed_topics:
                 logging.info(f"Resubscribing to topic: {topic}")
                 client.subscribe(topic)

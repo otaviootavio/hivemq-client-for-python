@@ -66,8 +66,7 @@ class MQTTClientWrapper:
 
     def connect(self) -> bool:
         try:
-            logging.info(f"Initiating connection to {
-                         self.config['broker']}:{self.config['port']}")
+            logging.info(f"Initiating connection to {self.config['broker']}:{self.config['port']}")
             self.client.connect(
                 self.config['broker'], self.config['port'], keepalive=60)
             self.client.loop_start()
@@ -123,8 +122,7 @@ class MQTTClientWrapper:
                 logging.info(f"Subscribed successfully to {topic}")
                 return True
             else:
-                logging.error(f"Failed to subscribe to {
-                              topic} (code: {result[0]})")
+                logging.error(f"Failed to subscribe to {topic} (code: {result[0]})")
                 return False
 
         except Exception as e:

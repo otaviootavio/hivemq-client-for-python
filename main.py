@@ -88,8 +88,8 @@ class OptimizedMessageHandler(DefaultMessageHandler):
             except Exception as e:
                 retry_count += 1
                 if retry_count == max_retries:
-                    logging.error(f"Failed to store message after {
-                                  max_retries} attempts")
+                    logging.error(
+                        f"Failed to store message after {max_retries} attempts")
                     raise
                 logging.warning(f"Retry {retry_count} for message storage")
 

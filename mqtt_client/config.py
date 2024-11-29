@@ -42,8 +42,8 @@ class ConfigurationManager:
 
         # Validate broker URL format
         if self.mqtt_broker and not self.mqtt_broker.endswith('.hivemq.cloud'):
-            errors.append(f"Invalid HiveMQ broker URL format: {
-                          self.mqtt_broker}")
+            errors.append(
+                f"Invalid HiveMQ broker URL format: {self.mqtt_broker}")
 
         # Validate port
         if not isinstance(self.mqtt_port, int) or self.mqtt_port <= 0:
@@ -58,10 +58,10 @@ class ConfigurationManager:
         logging.info("Configuration validation successful")
         logging.debug(f"Using broker: {self.mqtt_broker}")
         logging.debug(f"Using port: {self.mqtt_port}")
-        logging.debug(f"Username length: {
-                      len(self.mqtt_username) if self.mqtt_username else 0}")
-        logging.debug(f"Password length: {
-                      len(self.mqtt_password) if self.mqtt_password else 0}")
+        logging.debug(
+            f"Username length: {len(self.mqtt_username) if self.mqtt_username else 0}")
+        logging.debug(
+            f"Password length: {len(self.mqtt_password) if self.mqtt_password else 0}")
 
     def setup_logging(self) -> None:
         logging.basicConfig(
@@ -70,8 +70,8 @@ class ConfigurationManager:
         )
 
     def get_mqtt_config(self) -> Dict[str, str]:
-        logging.debug(f"Certificate starts with: {
-                      self.hivemq_cloud_cert[:50]}")
+        logging.debug(
+            f"Certificate starts with: {self.hivemq_cloud_cert[:50]}")
         return {
             'broker': self.mqtt_broker,
             'port': self.mqtt_port,

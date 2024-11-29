@@ -41,6 +41,7 @@ def main():
     try:
         # Load environment variables
         load_dotenv()
+        logging.basicConfig(level=logging.DEBUG)
 
         with open('cert.pem', 'r') as cert_file:
             cert_content = cert_file.read()
@@ -51,7 +52,8 @@ def main():
             mqtt_username=os.getenv('MQTT_USERNAME_2'),
             mqtt_password=os.getenv('MQTT_PASSWORD_2'),
             hivemq_cloud_cert=cert_content,
-            mqtt_port=int(os.getenv('MQTT_PORT', '8883'))
+            mqtt_port=int(os.getenv('MQTT_PORT', '8883')),
+            mqtt_client_id=os.getenv('MQTT_CLIENT_ID_2')
         )
         mqtt_config = config_manager.get_mqtt_config()
 
